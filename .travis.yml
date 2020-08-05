@@ -6,6 +6,10 @@ jdk:
   - openjdk8
 python:
   - "3.7"
+  - "3.8"
+env:
+  - SPARK_VERSION=2.4.6
+  - SPARK_VERSION=3.0.0
 before_install:
   - sudo apt-get -y install python3-pip python-dev
   - sudo pip3 install -U setuptools
@@ -13,15 +17,15 @@ before_install:
   - sudo pip3 install -U virtualenvwrapper
 install:
 - python3 -m pip install pipenv
-- wget https://archive.apache.org/dist/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz
-- tar -xzf spark-2.4.4-bin-hadoop2.7.tgz
-- rm spark-2.4.4-bin-hadoop2.7.tgz
+- wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+- tar -xzf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+- rm spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
 
 script:
   - (cd python;pipenv install --dev) 
-  - export SPARK_HOME=$PWD/spark-2.4.4-bin-hadoop2.7
+  - export SPARK_HOME=$PWD/spark-${SPARK_VERSION}-bin-hadoop2.7
   - export PYTHONPATH=$SPARK_HOME/python
-  - mvn -q clean install
+  - mvn -q clean install -Dspark.version=${SPARK_VERSION}
   - find core/target/ -iregex "core\/target\/geospark-[0-9]\.[0-9]\.[0-9]\.jar" -exec cp {} $SPARK_HOME/jars \;
   - find sql/target/ -iregex "sql\/target\/geospark-sql_[0-9]\.[0-9]-[0-9]\.[0-9]\.[0-9]\.jar" -exec cp {} $SPARK_HOME/jars \;
   - (cd python;pipenv run pytest tests)
