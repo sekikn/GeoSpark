@@ -27,7 +27,7 @@ object UdfRegistrator {
 
   def registerAll(sparkSession: SparkSession): Unit = {
     Catalog.expressions.foreach(f=>FunctionRegistry.builtin.registerFunction(f.getClass.getSimpleName.dropRight(1),f))
-    Catalog.aggregateExpressions.foreach(f=>sparkSession.udf.register(f.getClass.getSimpleName,f))
+    Catalog.aggregateExpressions.foreach(f=>FunctionRegistry.builtin.registerFunction(f.getClass.getSimpleName,f))
   }
 
   def dropAll(sparkSession: SparkSession): Unit = {
