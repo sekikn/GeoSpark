@@ -186,13 +186,13 @@ public class FunctionTest extends TestBase{
     public void testNPoints() {
         Table polygonTable = createPolygonTable(1);
         Table resultTable = polygonTable.select(call(Functions.ST_NPoints.class.getSimpleName(), $(polygonColNames[0])));
-        assertEquals(4, first(resultTable).getField(0));
+        assertEquals(5, first(resultTable).getField(0));
     }
 
     @Test
     public void testNumGeometries() {
         Table collectionTable = tableEnv.sqlQuery("SELECT ST_GeomFromWKT('GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))') AS collection");
-        Table resultTable = collectionTable.select(call(Functions.ST_NumGeometries.class.getSimpleName(), $("collection"), 1));
+        Table resultTable = collectionTable.select(call(Functions.ST_NumGeometries.class.getSimpleName(), $("collection")));
         assertEquals(3, first(resultTable).getField(0));
     }
 
