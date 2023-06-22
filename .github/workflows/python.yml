@@ -17,6 +17,10 @@ jobs:
         include:
           - spark: '3.4.0'
             scala: '2.12.8'
+            python: '3.11'
+            hadoop: '3'
+          - spark: '3.4.0'
+            scala: '2.12.8'
             python: '3.10'
             hadoop: '3'
           - spark: '3.4.0'
